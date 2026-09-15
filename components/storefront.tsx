@@ -163,25 +163,6 @@ export default function Storefront({ productId, categoryId, children }: { produc
                     <p>{product.colourName} · {product.concept ? "Concept · Coming soon" : "Coming soon"}</p>
                   </div>
                   <p className="card-quote">{product.lineOne} {product.lineTwo}</p>
-                  {!product.concept && <><fieldset>
-                    <legend>Select size</legend>
-                    <div className="size-row">
-                      {sizes.map((size) => (
-                        <button
-                          className={selectedSize[product.id] === size ? "selected" : ""}
-                          key={size}
-                          onClick={() => setSelectedSize((current) => ({ ...current, [product.id]: size }))}
-                          aria-pressed={selectedSize[product.id] === size}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </fieldset>
-                  <button className="add-button" disabled={!bagReady || !selectedSize[product.id]} onClick={() => addToBag(product)}>
-                    {selectedSize[product.id] ? "ADD TO BAG" : "CHOOSE A SIZE"}
-                  </button>
-                  </>}
                   <a className="view-product" href={`/products/${product.id}`}>View details →</a>
                 </div>
               </article>
