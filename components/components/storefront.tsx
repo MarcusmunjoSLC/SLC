@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { products, sizes, categories, categoryOf, teeProducts, storyFor, type Product, type BagItem } from "./catalogue";
+import { products, sizes, type Product, type BagItem } from "./catalogue";
 
 // Display individual regions of the original supplied board without altering it.
 const frames = [
@@ -12,9 +12,7 @@ const frames = [
   [350, 889, 286, 231], [603, 889, 282, 231], [851, 889, 285, 231],
 ];
 function ShirtPhoto({ index, name }: { index: number; name: string }) {
-  const product = products[index];
-  if (product.image) return <Image src={product.image} alt={name + " — design concept"} width={1122} height={1402} className="concept-photo" sizes="(max-width:760px) 100vw, 50vw" />;
-  const [x, y, width, height] = frames[teeProducts.findIndex((item) => item.id === product.id)];
+  const [x, y, width, height] = frames[index];
   return <div className="shirt-photo" style={{ aspectRatio: `${width}/${height}` }}>
     {/* The source is a contact sheet; CSS reveals only this shirt's region. */}
     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -23,10 +21,8 @@ function ShirtPhoto({ index, name }: { index: number; name: string }) {
   </div>;
 }
 
-export default function Storefront({ productId, categoryId, children }: { productId?: string; categoryId?: string; children?: ReactNode }) {
+export default function Storefront({ productId }: { productId?: string }) {
   const currentProduct = products.find((product) => product.id === productId);
-  const category = categories.find((item) => item.id === categoryId);
-  const listedProducts = products.filter((product) => categoryOf(product) === categoryId);
   const [bag, setBag] = useState<BagItem[]>([]);
   const [bagReady, setBagReady] = useState(false);
   const [bagOpen, setBagOpen] = useState(false);
@@ -85,41 +81,32 @@ export default function Storefront({ productId, categoryId, children }: { produc
         </a>
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Main navigation">
           <a href="/#collection" onClick={() => setMenuOpen(false)}>Shop</a>
-          <a href="/community" onClick={() => setMenuOpen(false)}>Community / Blog</a>
+          <a href="#details" onClick={() => setMenuOpen(false)}>Details</a>
         </nav>
         <button className="bag-button" onClick={() => setBagOpen(true)} aria-label={`Open bag with ${bag.length} items`}>
           BAG <span>{String(bag.length).padStart(2, "0")}</span>
         </button>
       </header>
-      <nav className="category-nav" aria-label="Shop categories">
-        {categories.map((item) => <a href={`/shop/${item.id}`} key={item.id} aria-current={categoryId === item.id ? "page" : undefined}>{item.name}</a>)}
-      </nav>
 
-      {children || (currentProduct ? (
+      {currentProduct ? (
         <section className="product-page">
-          <a className="back-link" href={`/shop/${categoryOf(currentProduct)}`}>← Back to {categories.find((item) => item.id === categoryOf(currentProduct))?.name.toLowerCase()}</a>
+          <a className="back-link" href="/#collection">← Back to collection</a>
           <div className="product-detail-grid">
             <div className="detail-photo">
               <ShirtPhoto index={products.indexOf(currentProduct)} name={currentProduct.name} />
             </div>
             <div className="detail-copy">
-              <p className="eyebrow">{categories.find((item) => item.id === categoryOf(currentProduct))?.name}</p>
+              <p className="eyebrow">THE OVERSIZED COLLECTION</p>
               <h1>{currentProduct.name}</h1>
-              <p className="product-status">{currentProduct.concept ? "Design concept · Coming soon" : "Coming soon"}</p>
-              <blockquote className="product-quote">{currentProduct.lineOne} {currentProduct.lineTwo}</blockquote>
-              <div className="supporting-lines">{storyFor(currentProduct).map((line) => <p key={line}>{line}</p>)}</div>
-              <p>{currentProduct.description || "An oversized heavyweight cotton tee with a statement design and the Soft Life Club signature."}</p>
+              <p className="product-status">Coming soon</p>
+              <p>An oversized heavyweight cotton tee featuring “{currentProduct.lineOne}{currentProduct.lineTwo ? " " + currentProduct.lineTwo : ""}”.</p>
               <dl className="product-facts">
                 <div><dt>Colour shown</dt><dd>{currentProduct.colourName}</dd></div>
-                {!currentProduct.concept && <>
                 <div><dt>Material</dt><dd>100% cotton</dd></div>
                 <div><dt>Fit</dt><dd>Oversized</dd></div>
                 <div><dt>Fabric</dt><dd>Premium heavyweight</dd></div>
                 <div><dt>Finish</dt><dd>Embroidered logo</dd></div>
-                </>}
-                {currentProduct.concept && <div><dt>Product details</dt><dd>Final materials, sizing and specifications to be confirmed.</dd></div>}
               </dl>
-              {!currentProduct.concept ? <>
               <fieldset>
                 <legend>Choose your size</legend>
                 <div className="size-row">
@@ -132,7 +119,6 @@ export default function Storefront({ productId, categoryId, children }: { produc
               <button className="add-button" disabled={!bagReady || !selectedSize[currentProduct.id]} onClick={() => addToBag(currentProduct)}>
                 {selectedSize[currentProduct.id] ? "ADD TO BAG" : "CHOOSE A SIZE"}
               </button>
-              </> : <p className="concept-note">Concept preview only. Not available to purchase.</p>}
               <p className="availability-note">This collection is not available to order yet.</p>
             </div>
           </div>
@@ -141,8 +127,8 @@ export default function Storefront({ productId, categoryId, children }: { produc
       <section className="hero">
         <div className="hero-copy">
           <p>SOFT LIFE CLUB</p>
-          <h1>{category ? category.name : "Soft life. Your way."}</h1>
-          <p className="hero-description">{category ? category.description : "Statement tees, everyday layers and the finishing touches."}</p>
+          <h1>Oversized T-shirts.</h1>
+          <p className="hero-description">100% cotton. Heavyweight comfort.</p>
           <a className="hero-link" href="#collection">SHOP THE COLLECTION</a>
         </div>
       </section>
@@ -150,29 +136,22 @@ export default function Storefront({ productId, categoryId, children }: { produc
       <section className="collection" id="collection">
         <div className="section-heading">
           <div>
-            <h2>{category ? "The collection" : "Shop by category"}</h2>
+            <h2>Shop the collection</h2>
           </div>
-          <p>{category ? listedProducts.length + (listedProducts.length === 1 ? " piece" : " pieces") : "Five ways to wear SLC"}</p>
+          <p>{products.length} pieces · S—XL</p>
         </div>
 
-        {!category ? <div className="product-grid category-grid">
-          {categories.map((item) => <a className="category-card" key={item.id} href={`/shop/${item.id}`}>
-            <div className="product-photo"><ShirtPhoto index={products.findIndex((product) => product.id === item.cover)} name={item.name} /></div>
-            <h3>{item.name}</h3><p>{item.description}</p><span>Explore {item.name.toLowerCase()} →</span>
-          </a>)}
-        </div> : <div className="product-grid">
-          {listedProducts.map((product) => {
-            const index = products.indexOf(product);
+        <div className="product-grid">
+          {products.map((product, index) => {
             return (
               <article className="product" key={product.id}>
                 <a className="product-photo" href={`/products/${product.id}`} aria-label={`View ${product.name}`}><ShirtPhoto index={index} name={product.name} /></a>
                 <div className="product-info">
                   <div>
                     <h3><a href={`/products/${product.id}`}>{product.name}</a></h3>
-                    <p>{product.colourName} · {product.concept ? "Concept · Coming soon" : "Coming soon"}</p>
+                    <p>{product.colourName} · Coming soon</p>
                   </div>
-                  <p className="card-quote">{product.lineOne} {product.lineTwo}</p>
-                  {!product.concept && <><fieldset>
+                  <fieldset>
                     <legend>Select size</legend>
                     <div className="size-row">
                       {sizes.map((size) => (
@@ -190,17 +169,19 @@ export default function Storefront({ productId, categoryId, children }: { produc
                   <button className="add-button" disabled={!bagReady || !selectedSize[product.id]} onClick={() => addToBag(product)}>
                     {selectedSize[product.id] ? "ADD TO BAG" : "CHOOSE A SIZE"}
                   </button>
-                  </>}
-                  <a className="view-product" href={`/products/${product.id}`}>View details →</a>
                 </div>
               </article>
             );
           })}
-        </div>}
+        </div>
       </section>
 
-      </>))}
-      {!children && <section className="community-banner"><p className="eyebrow">THE SLC JOURNAL</p><h2>More than what you wear.</h2><p>Thoughts on personal style, boundaries and making room for yourself.</p><a href="/community">Explore Community / Blog →</a></section>}
+      </>)}
+      <section className="details" id="details">
+        <div><span>01</span><h3>100% cotton</h3><p>Premium heavyweight fabric made for structure and softness.</p></div>
+        <div><span>02</span><h3>Oversized fit</h3><p>A relaxed silhouette designed for everyday comfort.</p></div>
+        <div><span>03</span><h3>Embroidered logo</h3><p>Finished with the signature Soft Life Club mark.</p></div>
+      </section>
 
       <footer>
         <a className="footer-mark" href="#top" aria-label="Soft Life Club home">

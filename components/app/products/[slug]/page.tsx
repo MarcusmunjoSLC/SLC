@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) notFound();
   return {
     title: `${product.name} | Soft Life Club`,
-    description: product.description || `${product.name} in ${product.colourName}. 100% cotton, oversized fit and premium heavyweight fabric.`,
+    description: `${product.name} in ${product.colourName}. 100% cotton, oversized fit and premium heavyweight fabric.`,
   };
 }
 export default async function ProductPage({ params }: Props) {

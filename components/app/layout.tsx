@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Soft Life Club — Clothing & Lifestyle",
-  description: "Explore statement T-shirts, joggers, sports bras, sunglasses and tracksuit concepts. Discover the Soft Life Club journal.",
+  title: "Soft Life Club — Oversized Collection",
+  description: "Luxury comfort. Expensive peace. Shop the Soft Life Club oversized collection.",
   icons: { icon: "/favicon.svg" },
 };
 
