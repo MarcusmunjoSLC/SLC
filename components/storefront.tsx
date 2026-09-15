@@ -28,6 +28,22 @@ const products: Product[] = [
 
 const sizes = ["S", "M", "L", "XL"];
 
+// Display individual regions of the original supplied board without altering it.
+const frames = [
+  [0, 0, 471, 647], [476, 0, 439, 647], [921, 0, 481, 647],
+  [349, 658, 285, 230], [603, 658, 283, 230], [850, 658, 285, 230],
+  [350, 889, 286, 231], [603, 889, 282, 231], [851, 889, 285, 231],
+];
+function ShirtPhoto({ index, name }: { index: number; name: string }) {
+  const [x, y, width, height] = frames[index];
+  return <div className="shirt-photo" style={{ aspectRatio: `${width}/${height}` }}>
+    {/* The source is a contact sheet; CSS reveals only this shirt's region. */}
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img src="/collection-board.jpeg" alt={name} loading="lazy"
+      style={{ width: `${1402 / width * 100}%`, left: `${-x / width * 100}%`, top: `${-y / height * 100}%` }} />
+  </div>;
+}
+
 export default function Storefront() {
   const [bag, setBag] = useState<BagItem[]>([]);
   const [bagOpen, setBagOpen] = useState(false);
@@ -69,7 +85,6 @@ export default function Storefront() {
 
   return (
     <main>
-      <div className="announcement">FREE DELIVERY DETAILS TO BE CONFIRMED</div>
       <header className="site-header">
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">
           <span /> <span />
@@ -79,7 +94,6 @@ export default function Storefront() {
         </a>
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Main navigation">
           <a href="#collection" onClick={() => setMenuOpen(false)}>Shop</a>
-          <a href="#story" onClick={() => setMenuOpen(false)}>Our world</a>
           <a href="#details" onClick={() => setMenuOpen(false)}>Details</a>
         </nav>
         <button className="bag-button" onClick={() => setBagOpen(true)} aria-label={`Open bag with ${bag.length} items`}>
@@ -88,47 +102,31 @@ export default function Storefront() {
       </header>
 
       <section className="hero" id="top">
-        <Image src="/collection-board.jpeg" alt="Soft Life Club oversized T-shirt collection in cream, mocha, sand and black" fill priority sizes="100vw" />
-        <div className="hero-shade" />
         <div className="hero-copy">
-          <p>EST. 2024 · THE OVERSIZED COLLECTION</p>
-          <h1>Luxury comfort.<br />Expensive peace.</h1>
+          <p>SOFT LIFE CLUB</p>
+          <h1>Oversized T-shirts.</h1>
+          <p className="hero-description">100% cotton. Heavyweight comfort.</p>
           <a className="hero-link" href="#collection">SHOP THE COLLECTION</a>
         </div>
-      </section>
-
-      <section className="intro" id="story">
-        <p className="eyebrow">SOFT LIFE IS A LIFESTYLE</p>
-        <h2>Dress for the life<br />you refuse to rush.</h2>
-        <p className="intro-copy">Premium heavyweight cotton. An oversized fit. Quiet statements for people with hard boundaries.</p>
       </section>
 
       <section className="collection" id="collection">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">THE FIRST DROP</p>
-            <h2>Choose your peace.</h2>
+            <h2>Shop the collection</h2>
           </div>
           <p>{products.length} pieces · S—XL</p>
         </div>
 
         <div className="product-grid">
           {products.map((product, index) => {
-            const isDark = ["#42372f", "#352b26", "#151515"].includes(product.colour);
             return (
               <article className="product" key={product.id}>
-                <div className={`product-art ${isDark ? "dark" : ""}`} style={{ backgroundColor: product.colour }}>
-                  <span className="product-number">0{index + 1}</span>
-                  <div>
-                    <strong>{product.lineOne}</strong>
-                    {product.lineTwo && <span>{product.lineTwo}</span>}
-                  </div>
-                  <small>SLC</small>
-                </div>
+                <div className="product-photo"><ShirtPhoto index={index} name={product.name} /></div>
                 <div className="product-info">
                   <div>
                     <h3>{product.name}</h3>
-                    <p>{product.colourName} · Price to be added</p>
+                    <p>{product.colourName} · Coming soon</p>
                   </div>
                   <fieldset>
                     <legend>Select size</legend>
@@ -166,28 +164,28 @@ export default function Storefront() {
           <Image src="/soft-life-club-logo.png" alt="Soft Life Club" width={1200} height={1300} className="footer-logo" />
         </a>
         <div><p>SOFT LIFE CLUB</p><p>Luxury comfort. Expensive peace.</p></div>
-        <div className="footer-links"><a href="#collection">Shop</a><a href="mailto:hello@softlifeclub.com">Contact</a><a href="#top">Back to top</a></div>
+        <div className="footer-links"><a href="#collection">Shop</a><a href="#top">Back to top</a></div>
       </footer>
 
       {bagOpen && <button className="backdrop" onClick={() => setBagOpen(false)} aria-label="Close bag" />}
       <aside className={bagOpen ? "bag-drawer open" : "bag-drawer"} aria-hidden={!bagOpen}>
         <div className="bag-heading"><h2>Your bag</h2><button onClick={() => setBagOpen(false)} aria-label="Close bag">×</button></div>
         {bag.length === 0 ? (
-          <div className="empty-bag"><p>Your bag is taking it easy.</p><button onClick={() => setBagOpen(false)}>CONTINUE SHOPPING</button></div>
+          <div className="empty-bag"><p>Your bag is empty.</p><button onClick={() => setBagOpen(false)}>CONTINUE SHOPPING</button></div>
         ) : (
           <div className="bag-content">
             <div className="bag-items">
               {Object.values(groupedBag).map(({ item, quantity }) => (
                 <div className="bag-item" key={`${item.id}-${item.size}`}>
-                  <div className="bag-swatch" style={{ backgroundColor: item.colour }} />
+                  <div className="bag-swatch"><ShirtPhoto index={products.findIndex((product) => product.id === item.id)} name={item.name} /></div>
                   <div><h3>{item.name}</h3><p>{item.colourName} · Size {item.size}</p><p>Quantity {quantity}</p></div>
                   <button onClick={() => removeOne(item.id, item.size)} aria-label={`Remove one ${item.name}`}>−</button>
                 </div>
               ))}
             </div>
             <div className="checkout-panel">
-              <p>Prices and Stripe checkout will activate once your real product prices are added.</p>
-              <button disabled>CHECKOUT NOT YET ACTIVE</button>
+              <p>This collection is not available to order yet.</p>
+              <button disabled>COMING SOON</button>
             </div>
           </div>
         )}

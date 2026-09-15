@@ -136,3 +136,69 @@ footer p:last-child { color: #6c655c; font: 500 1.2rem var(--font-display), seri
   html { scroll-behavior: auto; }
   .bag-drawer { transition: none; }
 }
+
+/* Simple product-first layout: text stays in normal flow, away from photos. */
+body { line-height:1.6; }
+h1,h2,h3,p { overflow-wrap:break-word; }
+.site-header { display:flex; height:auto; min-height:80px; gap:24px; padding:12px 5%; flex-wrap:wrap; }
+.wordmark { flex-shrink:0; }
+.nav { display:flex; position:static; padding:0; border:0; flex-direction:row; gap:24px; margin-left:auto; font-size:.875rem; }
+.bag-button { margin-left:16px; font-size:.875rem; }
+.menu-button { display:none; }
+.hero { height:auto; min-height:0; background:transparent; padding:40px 5% 24px; overflow:visible; }
+.hero-copy { position:static; max-width:900px; color:var(--ink); }
+.hero-copy h1 { font:400 clamp(2rem,5vw,3.75rem)/1.25 var(--font-display); letter-spacing:normal; margin:12px 0 16px; }
+.hero-copy p { font-size:.875rem; line-height:1.6; }
+.hero-copy .hero-description { font-size:1rem; letter-spacing:0; text-transform:none; }
+.hero-link { border-color:var(--ink); padding:10px 0; font-size:.875rem; }
+.collection { padding:24px 5% 64px; }
+.section-heading { gap:20px; align-items:center; margin-bottom:24px; }
+.section-heading h2 { font-size:clamp(1.5rem,3vw,2rem); line-height:1.4; }
+.section-heading > p { font-size:.875rem; }
+.product-grid { gap:40px 24px; }
+.product { min-width:0; display:flex; flex-direction:column; }
+.product-photo { aspect-ratio:4/5; display:flex; align-items:center; overflow:hidden; background:#e9e5df; }
+.shirt-photo { position:relative; overflow:hidden; width:100%; flex-shrink:0; }
+.shirt-photo img { position:absolute; max-width:none; height:auto; display:block; }
+.product-info { display:flex; flex-direction:column; flex:1; }
+.product-info > div:first-child { min-height:0; }
+.product-info h3 { font-size:1rem; line-height:1.5; letter-spacing:0; }
+.product-info p { font-size:.875rem; line-height:1.6; }
+fieldset { min-width:0; }
+legend { font-size:.875rem; letter-spacing:0; }
+.size-row button { min-height:44px; font-size:.875rem; }
+.add-button { margin-top:auto; min-height:48px; height:auto; padding:12px; font-size:.875rem; letter-spacing:.04em; }
+.details { padding:48px 5%; background:transparent; color:var(--ink); gap:32px; border-top:1px solid var(--line); }
+.details div { border:0; padding:0; min-width:0; }
+.details span { display:none; }
+.details h3 { margin:0 0 12px; font-size:1.5rem; line-height:1.4; }
+.details p { font-size:1rem; color:#60584f; }
+footer { min-height:0; padding:32px 5%; display:flex; flex-wrap:wrap; align-items:center; gap:32px; }
+.footer-logo { width:80px; }
+.footer-links { margin-left:auto; font-size:.875rem; }
+footer p { line-height:1.6; }
+.bag-drawer { display:none; transform:none; }
+.bag-drawer.open { display:flex; }
+.bag-swatch { height:auto; border:0; }
+.bag-item { grid-template-columns:64px minmax(0,1fr) 44px; }
+.bag-item h3 { font-size:1rem; line-height:1.5; }
+.bag-item p,.checkout-panel p { font-size:.875rem; line-height:1.6; }
+.bag-item > button { width:44px; height:44px; }
+.checkout-panel button,.empty-bag button { font-size:.875rem; min-height:48px; }
+@media(max-width:900px) {
+ .site-header { gap:12px; }
+ .nav { gap:16px; }
+ .bag-button { margin-left:0; }
+ .hero { height:auto; min-height:0; }
+ .hero-copy h1 { font-size:clamp(2rem,6vw,3rem); }
+ .product-grid { gap:32px 16px; }
+ .section-heading > p { display:block; }
+ .details { grid-template-columns:1fr; }
+}
+@media(max-width:420px) {
+ .product-grid { grid-template-columns:1fr; }
+ .product-photo { max-height:440px; }
+ .section-heading { flex-direction:column; align-items:start; gap:0; }
+ .bag-button span { font-size:.875rem; }
+ .footer-links { margin-left:0; }
+}
