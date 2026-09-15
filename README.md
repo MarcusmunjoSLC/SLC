@@ -1,5 +1,13 @@
 # Soft Life Club Store
 
+## Latest update
+
+The homepage now introduces Love, Escapes, Wardrobe and Society. Love and Escapes are Coming Soon; Wardrobe holds all five clothing/accessory categories; Society contains the journal. Join SLC and Partners have separate submission forms.
+
+Real collection is implemented through a server-only Supabase REST route, but live configuration is not complete. Follow SIGNUPS-SETUP.md and run supabase/001_slc_signups.sql in the selected project, then add the two server environment variables to Vercel and redeploy. Missing configuration produces an error instead of pretending to save emails.
+
+All nine T-shirt contact-sheet crops have been replaced with individual generated product renders. The built-in image generator used each original slogan and colour from the supplied reference to create complete, uncropped 1122×1402 back-facing tee visualisations. Files are public/tees/<product-id>.png. The source board is retained for reference.
+
 A Vercel-ready Next.js clothing and lifestyle storefront. Five category pages, thirteen product pages and a Community / Blog hub with three original starter articles.
 
 ## Updating the live site

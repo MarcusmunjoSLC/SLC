@@ -16,7 +16,7 @@ export default async function ArticlePage({ params }: Props) {
   const article = articles.find((article) => article.slug === slug);
   if (!article) notFound();
   return <Storefront><article className="journal-article">
-    <a className="back-link" href="/community">← Back to the journal</a>
+    <a className="back-link" href="/society">← Back to Society</a>
     <p className="eyebrow">{article.label}</p><h1>{article.title}</h1>
     <p className="article-deck">{article.excerpt}</p>
     <blockquote>{article.quote}</blockquote>

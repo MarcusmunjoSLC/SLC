@@ -1,26 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import { areas } from "./areas";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
-import { products, sizes, categories, categoryOf, teeProducts, storyFor, type Product, type BagItem } from "./catalogue";
+import { products, sizes, categories, categoryOf, storyFor, type Product, type BagItem } from "./catalogue";
 
-// Display individual regions of the original supplied board without altering it.
-const frames = [
-  [0, 0, 471, 647], [476, 0, 439, 647], [921, 0, 481, 647],
-  [349, 658, 285, 230], [603, 658, 283, 230], [850, 658, 285, 230],
-  [350, 889, 286, 231], [603, 889, 282, 231], [851, 889, 285, 231],
-];
 function ShirtPhoto({ index, name }: { index: number; name: string }) {
   const product = products[index];
-  if (product.image) return <Image src={product.image} alt={name + " — design concept"} width={1122} height={1402} className="concept-photo" sizes="(max-width:760px) 100vw, 50vw" />;
-  const [x, y, width, height] = frames[teeProducts.findIndex((item) => item.id === product.id)];
-  return <div className="shirt-photo" style={{ aspectRatio: `${width}/${height}` }}>
-    {/* The source is a contact sheet; CSS reveals only this shirt's region. */}
-    {/* eslint-disable-next-line @next/next/no-img-element */}
-    <img src="/collection-board.jpeg" alt={name} loading="lazy"
-      style={{ width: `${1402 / width * 100}%`, left: `${-x / width * 100}%`, top: `${-y / height * 100}%` }} />
-  </div>;
+  return <Image src={product.image || `/tees/${product.id}.png`} alt={name + " — product render"} width={1122} height={1402} className="concept-photo" sizes="(max-width:760px) 100vw, 50vw" />;
 }
 
 export default function Storefront({ productId, categoryId, children }: { productId?: string; categoryId?: string; children?: ReactNode }) {
@@ -84,16 +72,18 @@ export default function Storefront({ productId, categoryId, children }: { produc
           <Image src="/soft-life-club-logo.png" alt="Soft Life Club" width={1200} height={1300} priority className="brand-logo" />
         </a>
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Main navigation">
-          <a href="/#collection" onClick={() => setMenuOpen(false)}>Shop</a>
-          <a href="/community" onClick={() => setMenuOpen(false)}>Community / Blog</a>
+          {areas.map((area) => <a key={area.id} href={`/${area.id}`} onClick={() => setMenuOpen(false)}>{area.name}</a>)}
+          <a href="/partners">Partners</a>
+          <a className="join-link" href="/join">Join SLC</a>
         </nav>
         <button className="bag-button" onClick={() => setBagOpen(true)} aria-label={`Open bag with ${bag.length} items`}>
           BAG <span>{String(bag.length).padStart(2, "0")}</span>
         </button>
       </header>
-      <nav className="category-nav" aria-label="Shop categories">
+      {!children && <nav className="category-nav" aria-label="Wardrobe categories">
+        <a href="/wardrobe">Wardrobe</a>
         {categories.map((item) => <a href={`/shop/${item.id}`} key={item.id} aria-current={categoryId === item.id ? "page" : undefined}>{item.name}</a>)}
-      </nav>
+      </nav>}
 
       {children || (currentProduct ? (
         <section className="product-page">
@@ -101,6 +91,7 @@ export default function Storefront({ productId, categoryId, children }: { produc
           <div className="product-detail-grid">
             <div className="detail-photo">
               <ShirtPhoto index={products.indexOf(currentProduct)} name={currentProduct.name} />
+              <p className="render-caption">Design visualisation. Final product details may vary.</p>
             </div>
             <div className="detail-copy">
               <p className="eyebrow">{categories.find((item) => item.id === categoryOf(currentProduct))?.name}</p>
@@ -141,7 +132,7 @@ export default function Storefront({ productId, categoryId, children }: { produc
       <section className="hero">
         <div className="hero-copy">
           <p>SOFT LIFE CLUB</p>
-          <h1>{category ? category.name : "Soft life. Your way."}</h1>
+          <h1>{category ? category.name : "The SLC Wardrobe."}</h1>
           <p className="hero-description">{category ? category.description : "Statement tees, everyday layers and the finishing touches."}</p>
           <a className="hero-link" href="#collection">SHOP THE COLLECTION</a>
         </div>
@@ -200,14 +191,14 @@ export default function Storefront({ productId, categoryId, children }: { produc
       </section>
 
       </>))}
-      {!children && <section className="community-banner"><p className="eyebrow">THE SLC JOURNAL</p><h2>More than what you wear.</h2><p>Thoughts on personal style, boundaries and making room for yourself.</p><a href="/community">Explore Community / Blog →</a></section>}
+      {!children && <section className="community-banner"><p className="eyebrow">BE PART OF WHAT’S NEXT</p><h2>Join SLC.</h2><p>Get updates as Wardrobe, Love, Escapes and Society grow.</p><a href="/join">Join the waitlist →</a></section>}
 
       <footer>
         <a className="footer-mark" href="#top" aria-label="Soft Life Club home">
           <Image src="/soft-life-club-logo.png" alt="Soft Life Club" width={1200} height={1300} className="footer-logo" />
         </a>
         <div><p>SOFT LIFE CLUB</p><p>Luxury comfort. Expensive peace.</p></div>
-        <div className="footer-links"><a href="/#collection">Shop</a><a href="#top">Back to top</a></div>
+        <div className="footer-links"><a href="/wardrobe">Wardrobe</a><a href="/society">Society</a><a href="/partners">Partner with SLC</a><a href="/join">Join SLC</a></div>
       </footer>
 
       {bagOpen && <button className="backdrop" onClick={() => setBagOpen(false)} aria-label="Close bag" />}
