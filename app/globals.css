@@ -28,14 +28,18 @@
 .reflection h2 { font:400 1.4rem/1.4 Georgia,serif; margin:0; }
 @media(max-width:760px) { .journal-grid { grid-template-columns:1fr; } .category-nav { gap:8px 20px; } }
 .slc-home,.area-landing { padding:56px 5% 72px; }
+.landing-logo { display:block; width:104px; height:auto; margin-bottom:28px; }
 .slc-home h1,.area-landing h1,.form-page h1 { font:400 clamp(2.2rem,5vw,4rem)/1.2 Georgia,serif; max-width:800px; }
 .home-intro,.area-landing > p { max-width:640px; font-size:1.125rem; line-height:1.7; }
 .primary-link { display:inline-block; border:1px solid #231f1b; background:#231f1b; color:#fff; padding:14px 24px; font-size:1rem; line-height:1.5; text-align:center; cursor:pointer; }
 .primary-link:disabled { opacity:.6; cursor:wait; }
-.area-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 40px; margin-top:64px; }
-.area-card { border-top:1px solid var(--line); padding:32px 0; min-width:0; }
-.area-card h2 { font:400 2.1rem/1.3 Georgia,serif; margin:12px 0; }
-.area-card p,.area-card span { font-size:1rem; line-height:1.7; }
+.area-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:32px; max-width:1080px; margin:56px auto 0; }
+.area-card { display:flex; flex-direction:column; align-items:center; text-align:center; padding:8px; min-width:0; }
+.area-circle { width:100%; max-width:200px; aspect-ratio:1; border:1px solid #9c8976; border-radius:50%; display:grid; place-items:center; color:#725e4b; background:transparent; transition:background-color .2s ease,border-color .2s ease; }
+.area-circle svg { width:34%; height:34%; }
+.area-card:hover .area-circle,.area-card:focus-visible .area-circle { background:#eae3d8; border-color:#725e4b; }
+.area-card h2 { font:400 clamp(1.25rem,2.5vw,1.75rem)/1.4 Georgia,serif; margin:20px 0 0; }
+.area-card .area-status { font-size:.875rem; line-height:1.5; color:#665c50; margin:6px 0 0; }
 .form-page { max-width:760px; margin:auto; padding:40px 24px 72px; }
 .form-page > p { font-size:1.0625rem; line-height:1.7; }
 .signup-form { display:grid; gap:20px; margin-top:32px; }
@@ -47,7 +51,8 @@
 .form-trap { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
 .form-error { color:#8b2424; }
 .form-status { font-size:1rem; }
-@media(max-width:760px) { .area-grid { grid-template-columns:1fr; } }
+@media(max-width:760px) { .area-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 20px; margin-top:40px; } }
+@media(prefers-reduced-motion:reduce) { .area-circle { transition:none; } }
 :root {
   --ink: #171512;
   --paper: #f4f1ea;
