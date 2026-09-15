@@ -3,30 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
-type Product = {
-  id: string;
-  name: string;
-  lineOne: string;
-  lineTwo?: string;
-  colour: string;
-  colourName: string;
-};
-
-type BagItem = Product & { size: string };
-
-const products: Product[] = [
-  { id: "peace-over-everything", name: "Peace Over Everything Tee", lineOne: "SOFT LIFE CLUB", lineTwo: "peace over everything", colour: "#eeeae0", colourName: "Cream" },
-  { id: "pay-me-yet", name: "Pay Me Yet Tee", lineOne: "WHY ARE YOU SPEAKING TO ME?", lineTwo: "YOU DIDN’T PAY ME YET.", colour: "#42372f", colourName: "Mocha" },
-  { id: "rich-in-peace", name: "Rich In Peace Tee", lineOne: "RICH IN PEACE", lineTwo: "SOFT LIFE CLUB", colour: "#e7e0d5", colourName: "Sand" },
-  { id: "protect-your-peace", name: "Protect Your Peace Tee", lineOne: "PROTECT YOUR PEACE.", lineTwo: "COLLECT YOUR MONEY.", colour: "#e9e3d8", colourName: "Cream" },
-  { id: "dont-chase", name: "I Don’t Chase Tee", lineOne: "I DON’T CHASE.", lineTwo: "I CHOOSE.", colour: "#352b26", colourName: "Mocha" },
-  { id: "bare-minimum", name: "Bare Minimum Tee", lineOne: "LUXURY IS THE", lineTwo: "BARE MINIMUM.", colour: "#f4f3ef", colourName: "White" },
-  { id: "moisturized", name: "Too Moisturized Tee", lineOne: "TOO MOISTURIZED", lineTwo: "TO ARGUE.", colour: "#151515", colourName: "Black" },
-  { id: "fully-booked", name: "Fully Booked Tee", lineOne: "MY SCHEDULE IS FULLY BOOKED…", lineTwo: "WITH DOING NOTHING.", colour: "#ece7dd", colourName: "Cream" },
-  { id: "hard-boundaries", name: "Hard Boundaries Tee", lineOne: "SOFT LIFE.", lineTwo: "HARD BOUNDARIES.", colour: "#d8cdbd", colourName: "Sand" },
-];
-
-const sizes = ["S", "M", "L", "XL"];
+import { products, sizes, type Product, type BagItem } from "./catalogue";
 
 // Display individual regions of the original supplied board without altering it.
 const frames = [
@@ -44,20 +21,30 @@ function ShirtPhoto({ index, name }: { index: number; name: string }) {
   </div>;
 }
 
-export default function Storefront() {
+export default function Storefront({ productId }: { productId?: string }) {
+  const currentProduct = products.find((product) => product.id === productId);
   const [bag, setBag] = useState<BagItem[]>([]);
+  const [bagReady, setBagReady] = useState(false);
   const [bagOpen, setBagOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    const stored = window.localStorage.getItem("soft-life-club-bag");
-    if (stored) setBag(JSON.parse(stored));
+    try {
+      const stored = JSON.parse(window.localStorage.getItem("soft-life-club-bag") || "[]");
+      if (Array.isArray(stored)) setBag(stored.flatMap((item) => {
+        const product = products.find((product) => product.id === item?.id);
+        return product && sizes.includes(item.size) ? [{ ...product, size: item.size }] : [];
+      }));
+    } catch { /* An unavailable or invalid local bag starts empty. */ }
+    setBagReady(true);
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem("soft-life-club-bag", JSON.stringify(bag));
-  }, [bag]);
+    if (bagReady) {
+      try { window.localStorage.setItem("soft-life-club-bag", JSON.stringify(bag)); } catch {}
+    }
+  }, [bag, bagReady]);
 
   const groupedBag = useMemo(() => {
     return bag.reduce<Record<string, { item: BagItem; quantity: number }>>((grouped, item) => {
@@ -84,16 +71,16 @@ export default function Storefront() {
   }
 
   return (
-    <main>
+    <main id="top">
       <header className="site-header">
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">
           <span /> <span />
         </button>
-        <a className="wordmark" href="#top" aria-label="Soft Life Club home">
+        <a className="wordmark" href="/" aria-label="Soft Life Club home">
           <Image src="/soft-life-club-logo.png" alt="Soft Life Club" width={1200} height={1300} priority className="brand-logo" />
         </a>
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Main navigation">
-          <a href="#collection" onClick={() => setMenuOpen(false)}>Shop</a>
+          <a href="/#collection" onClick={() => setMenuOpen(false)}>Shop</a>
           <a href="#details" onClick={() => setMenuOpen(false)}>Details</a>
         </nav>
         <button className="bag-button" onClick={() => setBagOpen(true)} aria-label={`Open bag with ${bag.length} items`}>
@@ -101,7 +88,43 @@ export default function Storefront() {
         </button>
       </header>
 
-      <section className="hero" id="top">
+      {currentProduct ? (
+        <section className="product-page">
+          <a className="back-link" href="/#collection">← Back to collection</a>
+          <div className="product-detail-grid">
+            <div className="detail-photo">
+              <ShirtPhoto index={products.indexOf(currentProduct)} name={currentProduct.name} />
+            </div>
+            <div className="detail-copy">
+              <p className="eyebrow">THE OVERSIZED COLLECTION</p>
+              <h1>{currentProduct.name}</h1>
+              <p className="product-status">Coming soon</p>
+              <p>An oversized heavyweight cotton tee featuring “{currentProduct.lineOne}{currentProduct.lineTwo ? " " + currentProduct.lineTwo : ""}”.</p>
+              <dl className="product-facts">
+                <div><dt>Colour shown</dt><dd>{currentProduct.colourName}</dd></div>
+                <div><dt>Material</dt><dd>100% cotton</dd></div>
+                <div><dt>Fit</dt><dd>Oversized</dd></div>
+                <div><dt>Fabric</dt><dd>Premium heavyweight</dd></div>
+                <div><dt>Finish</dt><dd>Embroidered logo</dd></div>
+              </dl>
+              <fieldset>
+                <legend>Choose your size</legend>
+                <div className="size-row">
+                  {sizes.map((size) => <button key={size}
+                    className={selectedSize[currentProduct.id] === size ? "selected" : ""}
+                    aria-pressed={selectedSize[currentProduct.id] === size}
+                    onClick={() => setSelectedSize((current) => ({ ...current, [currentProduct.id]: size }))}>{size}</button>)}
+                </div>
+              </fieldset>
+              <button className="add-button" disabled={!bagReady || !selectedSize[currentProduct.id]} onClick={() => addToBag(currentProduct)}>
+                {selectedSize[currentProduct.id] ? "ADD TO BAG" : "CHOOSE A SIZE"}
+              </button>
+              <p className="availability-note">This collection is not available to order yet.</p>
+            </div>
+          </div>
+        </section>
+      ) : (<>
+      <section className="hero">
         <div className="hero-copy">
           <p>SOFT LIFE CLUB</p>
           <h1>Oversized T-shirts.</h1>
@@ -122,10 +145,10 @@ export default function Storefront() {
           {products.map((product, index) => {
             return (
               <article className="product" key={product.id}>
-                <div className="product-photo"><ShirtPhoto index={index} name={product.name} /></div>
+                <a className="product-photo" href={`/products/${product.id}`} aria-label={`View ${product.name}`}><ShirtPhoto index={index} name={product.name} /></a>
                 <div className="product-info">
                   <div>
-                    <h3>{product.name}</h3>
+                    <h3><a href={`/products/${product.id}`}>{product.name}</a></h3>
                     <p>{product.colourName} · Coming soon</p>
                   </div>
                   <fieldset>
@@ -143,7 +166,7 @@ export default function Storefront() {
                       ))}
                     </div>
                   </fieldset>
-                  <button className="add-button" disabled={!selectedSize[product.id]} onClick={() => addToBag(product)}>
+                  <button className="add-button" disabled={!bagReady || !selectedSize[product.id]} onClick={() => addToBag(product)}>
                     {selectedSize[product.id] ? "ADD TO BAG" : "CHOOSE A SIZE"}
                   </button>
                 </div>
@@ -153,6 +176,7 @@ export default function Storefront() {
         </div>
       </section>
 
+      </>)}
       <section className="details" id="details">
         <div><span>01</span><h3>100% cotton</h3><p>Premium heavyweight fabric made for structure and softness.</p></div>
         <div><span>02</span><h3>Oversized fit</h3><p>A relaxed silhouette designed for everyday comfort.</p></div>
@@ -164,7 +188,7 @@ export default function Storefront() {
           <Image src="/soft-life-club-logo.png" alt="Soft Life Club" width={1200} height={1300} className="footer-logo" />
         </a>
         <div><p>SOFT LIFE CLUB</p><p>Luxury comfort. Expensive peace.</p></div>
-        <div className="footer-links"><a href="#collection">Shop</a><a href="#top">Back to top</a></div>
+        <div className="footer-links"><a href="/#collection">Shop</a><a href="#top">Back to top</a></div>
       </footer>
 
       {bagOpen && <button className="backdrop" onClick={() => setBagOpen(false)} aria-label="Close bag" />}
