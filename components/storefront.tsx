@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import {useWishlist} from "./use-wishlist";
+import SizeGuide from "./size-guide";
 import { areas } from "./areas";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
@@ -15,25 +17,7 @@ export default function Storefront({ productId, categoryId, children, wishlistPa
   const currentProduct = products.find((product) => product.id === productId);
   const category = categories.find((item) => item.id === categoryId);
   const listedProducts = products.filter((product) => categoryOf(product) === categoryId);
-  const [wishlist, setWishlist] = useState<string[]>([]);
-  const [wishlistReady, setWishlistReady] = useState(false);
-  const [wishlistNotice, setWishlistNotice] = useState("");
-  useEffect(() => {
-    try {
-      const stored: unknown = JSON.parse(localStorage.getItem("slc-wishlist") || "[]");
-      if (Array.isArray(stored)) setWishlist([...new Set(stored.filter((id): id is string => typeof id === "string" && products.some(product => product.id === id)))]);
-    } catch { /* Start with an empty wishlist if storage is unavailable. */ }
-    setWishlistReady(true);
-  }, []);
-  function toggleWishlist(product: Product) {
-    const saved = wishlist.includes(product.id);
-    const next = saved ? wishlist.filter(id => id !== product.id) : [...wishlist, product.id];
-    setWishlist(next);
-    try {
-      localStorage.setItem("slc-wishlist", JSON.stringify(next));
-      setWishlistNotice(saved ? `${product.name} removed from your wishlist.` : `${product.name} saved to your wishlist.`);
-    } catch { setWishlistNotice("Saved for this page only. Your browser could not remember this wishlist."); }
-  }
+  const {wishlist,wishlistReady,loading:wishlistLoading,notice:wishlistNotice,toggleWishlist,user}=useWishlist();
   function wishlistButton(product: Product) {
     const saved = wishlist.includes(product.id);
     return <button type="button" className="wishlist-toggle" disabled={!wishlistReady} aria-pressed={saved} onClick={() => toggleWishlist(product)} aria-label={`${saved ? "Remove" : "Save"} ${product.name} ${saved ? "from" : "to"} wishlist`}>
@@ -99,6 +83,7 @@ export default function Storefront({ productId, categoryId, children, wishlistPa
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Main navigation">
           {areas.map((area) => <a key={area.id} href={`/${area.id}`} onClick={() => setMenuOpen(false)}>{area.name}</a>)}
         </nav>
+        <a className="account-link" href="/account">{user ? "Account" : "Log in"}</a>
         <a className="wishlist-nav" href="/wishlist" aria-label={`Wishlist with ${wishlist.length} items`}>♡ <span>{wishlist.length}</span></a>
         <button className="bag-button" onClick={() => setBagOpen(true)} aria-label={`Open bag with ${bag.length} items`}>
           BAG <span>{String(bag.length).padStart(2, "0")}</span>
@@ -112,8 +97,9 @@ export default function Storefront({ productId, categoryId, children, wishlistPa
       <p className="wishlist-announcement" role="status">{wishlistNotice}</p>
       {children || (wishlistPage ? <section className="collection wishlist-page">
         <div className="section-heading"><h1>Your wishlist.</h1></div>
-        <p>Keep your favourites here. Saved on this browser.</p>
-        {!wishlistReady ? <p>Loading your wishlist…</p> : wishlist.length === 0 ? <p>No favourites yet. <a href="/wardrobe">Explore the Wardrobe →</a></p> : <div className="product-grid">
+        <p>{user ? "Your favourites, saved to your account." : "Your guest wishlist is saved on this browser."}</p>
+        {!user && <p><a href="/account">Log in or create an account</a> to save a separate wishlist across devices.</p>}
+        {wishlistLoading ? <p>{wishlistNotice || "Loading your wishlist…"}</p> : wishlist.length === 0 ? <p>No favourites yet. <a href="/wardrobe">Explore the Wardrobe →</a></p> : <div className="product-grid">
           {wishlist.map(id => products.find(product => product.id === id)!).map(product => <article className="product" key={product.id}>
             <a className="product-photo" href={`/products/${product.id}`}><ShirtPhoto index={products.indexOf(product)} name={product.name} /></a>
             <h2><a href={`/products/${product.id}`}>{product.name}</a></h2>
@@ -160,6 +146,7 @@ export default function Storefront({ productId, categoryId, children, wishlistPa
                 {selectedSize[currentProduct.id] ? "ADD TO BAG" : "CHOOSE A SIZE"}
               </button>
               </> : null}
+              <SizeGuide product={currentProduct} />
               {wishlistButton(currentProduct)}
               <p className="availability-note">This collection is not available to order yet.</p>
             </div>
