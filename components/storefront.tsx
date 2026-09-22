@@ -11,10 +11,35 @@ function ShirtPhoto({ index, name }: { index: number; name: string }) {
   return <Image src={product.image || `/tees/${product.id}.png`} alt={name + " — product render"} width={1122} height={1402} className="concept-photo" sizes="(max-width:760px) 100vw, 50vw" />;
 }
 
-export default function Storefront({ productId, categoryId, children }: { productId?: string; categoryId?: string; children?: ReactNode }) {
+export default function Storefront({ productId, categoryId, children, wishlistPage = false }: { productId?: string; categoryId?: string; children?: ReactNode; wishlistPage?: boolean }) {
   const currentProduct = products.find((product) => product.id === productId);
   const category = categories.find((item) => item.id === categoryId);
   const listedProducts = products.filter((product) => categoryOf(product) === categoryId);
+  const [wishlist, setWishlist] = useState<string[]>([]);
+  const [wishlistReady, setWishlistReady] = useState(false);
+  const [wishlistNotice, setWishlistNotice] = useState("");
+  useEffect(() => {
+    try {
+      const stored: unknown = JSON.parse(localStorage.getItem("slc-wishlist") || "[]");
+      if (Array.isArray(stored)) setWishlist([...new Set(stored.filter((id): id is string => typeof id === "string" && products.some(product => product.id === id)))]);
+    } catch { /* Start with an empty wishlist if storage is unavailable. */ }
+    setWishlistReady(true);
+  }, []);
+  function toggleWishlist(product: Product) {
+    const saved = wishlist.includes(product.id);
+    const next = saved ? wishlist.filter(id => id !== product.id) : [...wishlist, product.id];
+    setWishlist(next);
+    try {
+      localStorage.setItem("slc-wishlist", JSON.stringify(next));
+      setWishlistNotice(saved ? `${product.name} removed from your wishlist.` : `${product.name} saved to your wishlist.`);
+    } catch { setWishlistNotice("Saved for this page only. Your browser could not remember this wishlist."); }
+  }
+  function wishlistButton(product: Product) {
+    const saved = wishlist.includes(product.id);
+    return <button type="button" className="wishlist-toggle" disabled={!wishlistReady} aria-pressed={saved} onClick={() => toggleWishlist(product)} aria-label={`${saved ? "Remove" : "Save"} ${product.name} ${saved ? "from" : "to"} wishlist`}>
+      <span aria-hidden="true">{saved ? "♥" : "♡"}</span> {saved ? "Saved" : "Save to wishlist"}
+    </button>;
+  }
   const [bag, setBag] = useState<BagItem[]>([]);
   const [bagReady, setBagReady] = useState(false);
   const [bagOpen, setBagOpen] = useState(false);
@@ -73,9 +98,8 @@ export default function Storefront({ productId, categoryId, children }: { produc
         </a>
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Main navigation">
           {areas.map((area) => <a key={area.id} href={`/${area.id}`} onClick={() => setMenuOpen(false)}>{area.name}</a>)}
-          <a href="/partners">Partners</a>
-          <a className="join-link" href="/join">Join SLC</a>
         </nav>
+        <a className="wishlist-nav" href="/wishlist" aria-label={`Wishlist with ${wishlist.length} items`}>♡ <span>{wishlist.length}</span></a>
         <button className="bag-button" onClick={() => setBagOpen(true)} aria-label={`Open bag with ${bag.length} items`}>
           BAG <span>{String(bag.length).padStart(2, "0")}</span>
         </button>
@@ -85,7 +109,20 @@ export default function Storefront({ productId, categoryId, children }: { produc
         {categories.map((item) => <a href={`/shop/${item.id}`} key={item.id} aria-current={categoryId === item.id ? "page" : undefined}>{item.name}</a>)}
       </nav>}
 
-      {children || (currentProduct ? (
+      <p className="wishlist-announcement" role="status">{wishlistNotice}</p>
+      {children || (wishlistPage ? <section className="collection wishlist-page">
+        <div className="section-heading"><h1>Your wishlist.</h1></div>
+        <p>Keep your favourites here. Saved on this browser.</p>
+        {!wishlistReady ? <p>Loading your wishlist…</p> : wishlist.length === 0 ? <p>No favourites yet. <a href="/wardrobe">Explore the Wardrobe →</a></p> : <div className="product-grid">
+          {wishlist.map(id => products.find(product => product.id === id)!).map(product => <article className="product" key={product.id}>
+            <a className="product-photo" href={`/products/${product.id}`}><ShirtPhoto index={products.indexOf(product)} name={product.name} /></a>
+            <h2><a href={`/products/${product.id}`}>{product.name}</a></h2>
+            <p>{product.colourName}</p>
+            {wishlistButton(product)}
+            <a className="view-product" href={`/products/${product.id}`}>View details →</a>
+          </article>)}
+        </div>}
+      </section> : currentProduct ? (
         <section className="product-page">
           <a className="back-link" href={`/shop/${categoryOf(currentProduct)}`}>← Back to {categories.find((item) => item.id === categoryOf(currentProduct))?.name.toLowerCase()}</a>
           <div className="product-detail-grid">
@@ -96,7 +133,6 @@ export default function Storefront({ productId, categoryId, children }: { produc
             <div className="detail-copy">
               <p className="eyebrow">{categories.find((item) => item.id === categoryOf(currentProduct))?.name}</p>
               <h1>{currentProduct.name}</h1>
-              <p className="product-status">{currentProduct.concept ? "Design concept · Coming soon" : "Coming soon"}</p>
               <blockquote className="product-quote">{currentProduct.lineOne} {currentProduct.lineTwo}</blockquote>
               <div className="supporting-lines">{storyFor(currentProduct).map((line) => <p key={line}>{line}</p>)}</div>
               <p>{currentProduct.description || "An oversized heavyweight cotton tee with a statement design and the Soft Life Club signature."}</p>
@@ -123,7 +159,8 @@ export default function Storefront({ productId, categoryId, children }: { produc
               <button className="add-button" disabled={!bagReady || !selectedSize[currentProduct.id]} onClick={() => addToBag(currentProduct)}>
                 {selectedSize[currentProduct.id] ? "ADD TO BAG" : "CHOOSE A SIZE"}
               </button>
-              </> : <p className="concept-note">Concept preview only. Not available to purchase.</p>}
+              </> : null}
+              {wishlistButton(currentProduct)}
               <p className="availability-note">This collection is not available to order yet.</p>
             </div>
           </div>
@@ -160,9 +197,10 @@ export default function Storefront({ productId, categoryId, children }: { produc
                 <div className="product-info">
                   <div>
                     <h3><a href={`/products/${product.id}`}>{product.name}</a></h3>
-                    <p>{product.colourName} · {product.concept ? "Concept · Coming soon" : "Coming soon"}</p>
+                    <p>{product.colourName}</p>
                   </div>
                   <p className="card-quote">{product.lineOne} {product.lineTwo}</p>
+                  {wishlistButton(product)}
                   <a className="view-product" href={`/products/${product.id}`}>View details →</a>
                 </div>
               </article>
@@ -200,7 +238,7 @@ export default function Storefront({ productId, categoryId, children }: { produc
             </div>
             <div className="checkout-panel">
               <p>This collection is not available to order yet.</p>
-              <button disabled>COMING SOON</button>
+              <button disabled>ORDERING UNAVAILABLE</button>
             </div>
           </div>
         )}
