@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
 type CartItem = {
@@ -10,6 +10,7 @@ type CartItem = {
 
 export async function POST(request: Request) {
   try {
+    const stripe = getStripe();
     const { items } = (await request.json()) as { items: CartItem[] };
 
     if (!items?.length) {
