@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 export async function requireAdmin(request: Request) {
   const authHeader = request.headers.get("authorization");
@@ -9,6 +9,8 @@ export async function requireAdmin(request: Request) {
 
   const token = authHeader.slice(7);
 
+  const supabaseAdmin = getSupabaseAdmin();
+
   const {
     data: { user },
     error,
@@ -18,7 +20,10 @@ export async function requireAdmin(request: Request) {
     return null;
   }
 
-  if (user.email.toLowerCase() !== process.env.ADMIN_EMAIL?.toLowerCase()) {
+  if (
+    user.email.toLowerCase() !==
+    process.env.ADMIN_EMAIL?.toLowerCase()
+  ) {
     return null;
   }
 
