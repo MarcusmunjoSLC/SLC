@@ -63,14 +63,14 @@ export const newCollection: Product[] = [
   },
   {
     "id": "slc-trousers-white",
-    "name": "SLC Wide-Leg Trousers — White",
+    "name": "SLC Wide-Leg Joggers — White",
     "lineOne": "ROOM TO MOVE. SPACE TO BE.",
     "colour": "#eee9de",
     "colourName": "White",
-    "category": "trousers",
+    "category": "joggers",
     "image": "/new-collection/slc-pants-white.png",
     "concept": true,
-    "description": "Wide-leg trousers with a drawstring waist and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
+    "description": "Wide-leg joggers with a drawstring waist and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
     "supporting": [
       "For the woman who moves through life on her own terms.",
       "She takes up space without explaining herself."
@@ -78,14 +78,14 @@ export const newCollection: Product[] = [
   },
   {
     "id": "slc-trousers-black",
-    "name": "SLC Wide-Leg Trousers — Black",
+    "name": "SLC Wide-Leg Joggers — Black",
     "lineOne": "ROOM TO MOVE. SPACE TO BE.",
     "colour": "#171614",
     "colourName": "Black",
-    "category": "trousers",
+    "category": "joggers",
     "image": "/new-collection/slc-pants-black.png",
     "concept": true,
-    "description": "Wide-leg trousers with a drawstring waist and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
+    "description": "Wide-leg joggers with a drawstring waist and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
     "supporting": [
       "For the woman who moves through life on her own terms.",
       "She takes up space without explaining herself."
@@ -93,14 +93,14 @@ export const newCollection: Product[] = [
   },
   {
     "id": "slc-trousers-brown",
-    "name": "SLC Wide-Leg Trousers — Brown",
+    "name": "SLC Wide-Leg Joggers — Brown",
     "lineOne": "ROOM TO MOVE. SPACE TO BE.",
     "colour": "#4f3428",
     "colourName": "Brown",
-    "category": "trousers",
+    "category": "joggers",
     "image": "/new-collection/slc-pants-brown.png",
     "concept": true,
-    "description": "Wide-leg trousers with a drawstring waist and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
+    "description": "Wide-leg joggers with a drawstring waist and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
     "supporting": [
       "For the woman who moves through life on her own terms.",
       "She takes up space without explaining herself."
@@ -203,7 +203,6 @@ export const newCollection: Product[] = [
 
 export const products: Product[] = [
   ...newCollection,
-  { id: "off-duty-joggers", name: "Off Duty Joggers", lineOne: "OFF DUTY. STILL THAT GIRL.", colour: "#eeeae0", colourName: "Cream", category: "joggers", image: "/joggers.png", concept: true, description: "A cream jogger concept with a drawstring waist, cuffed ankles and a small SLC monogram above the slogan.", supporting: ["For the woman who clocks out without shrinking.", "Her confidence doesn’t take a day off."] },
   { id: "strong-core-sports-bra", name: "Strong Core Sports Bra", lineOne: "SOFT LIFE. STRONG CORE.", colour: "#72513e", colourName: "Mocha", category: "sports-bras", image: "/sports-bra.png", concept: true, description: "A mocha scoop-neck sports-bra concept with cream lettering and the SLC monogram on the lower band.", supporting: ["For the woman building strength on her own terms.", "She makes room for softness, too."] },
   { id: "out-of-office-sunglasses", name: "Out of Office Sunglasses", lineOne: "LESS ACCESS. BETTER VIEWS.", colour: "#151515", colourName: "Black", category: "sunglasses", image: "/sunglasses.png", concept: true, description: "A black rectangular sunglasses concept with a gold-tone SLC monogram at the temple. The quote is the piece’s mood; the frames carry the logo only.", supporting: ["For the woman who chooses what gets her attention.", "Her outlook is clear. Her availability is limited."] },
   { id: "own-pace-tracksuit", name: "Own Pace Tracksuit", lineOne: "MOVING AT MY OWN PACE.", colour: "#d8cdbd", colourName: "Sand", category: "tracksuits", image: "/tracksuit.png", concept: true, description: "A sand zip-hoodie and jogger concept with matching SLC monograms and a small slogan on the thigh.", supporting: ["For the woman who has nothing to prove by rushing.", "She sets the pace and keeps her peace."] },
@@ -223,9 +222,8 @@ export const sizes = ["S", "M", "L", "XL"];
 export const categories = [
   {id:"hoodies",name:"Hoodies",description:"Easy layers. The SLC signature.",cover:"slc-hoodies-white"},
   {id:"tops",name:"Tops",description:"Everyday essentials. Quiet confidence.",cover:"slc-tops-black"},
-  {id:"trousers",name:"Trousers",description:"A little more room to move.",cover:"slc-trousers-brown"},
+  {id:"joggers",name:"Joggers",description:"A little more room to move.",cover:"slc-trousers-brown"},
   { id: "t-shirts", name: "T-shirts", description: "Oversized fits. Statements that speak for you.", cover: "peace-over-everything" },
-  { id: "joggers", name: "Joggers", description: "Off-duty ease with a little attitude.", cover: "off-duty-joggers" },
   { id: "sports-bras", name: "Sports bras", description: "Soft life. Strong energy.", cover: "strong-core-sports-bra" },
   { id: "sunglasses", name: "Sunglasses", description: "A different outlook. The same SLC signature.", cover: "out-of-office-sunglasses" },
   { id: "tracksuits", name: "Tracksuits", description: "Matching pieces. Your own pace.", cover: "own-pace-tracksuit" },

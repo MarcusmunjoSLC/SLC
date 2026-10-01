@@ -1,9 +1,10 @@
-SLC collection update
+SLC category and product-photo update
 
-1. Upload the app, components and public folders from this update into the existing GitHub repository at its root. Commit and wait for Vercel to finish deploying.
-2. Open ADD-COLLECTION.sql in TextEdit, copy all text into Supabase SQL Editor and click Run. This publishes the 12 new products. It does not replace existing rows.
-3. Open /wardrobe and check Hoodies, Tops, Trousers and Sunglasses. Each item has a product page, wishlist button and fit guide.
+1. Unzip this download.
+2. Open MarcusmunjoSLC/SLC on GitHub. Choose Add file > Upload files.
+3. Drag the app, components and public folders plus next.config.ts into the upload area.
+4. Commit changes. Vercel will deploy the update automatically.
 
-Prices, stock and exact sizes were not supplied; the new items remain unpriced and not orderable until configured. Edit them in your existing admin when ready.
-
-The additional boards are shown in The SLC edit; Sunglasses model 1.1 is an additional image on the rimless sunglasses page. Both jumpsuits are excluded.
+The database category changes have already been applied. You do not need to run SQL again.
+The old Joggers item is hidden. The former Trousers collection is now Joggers.
+Listings show one main view; additional views appear only on product pages.

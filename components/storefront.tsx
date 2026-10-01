@@ -32,6 +32,20 @@ function ShirtPhoto({
   product: StoreProduct;
   name: string;
 }) {
+  const src = product.image || `/tees/${product.id}.png`;
+  // Present only the hero panel from the supplied multi-view product boards.
+  const crop = src.match(/\/new-collection\/slc-pants-/)
+    ? { width: 1145, height: 1374, panelWidth: 750, panelHeight: 1374 }
+    : src.match(/\/new-collection\/sunglasses-model-[23]\.png$/)
+      ? { width: 1536, height: 1024, panelWidth: 1536, panelHeight: 550 }
+      : null;
+  if (crop) return (
+    <span className="product-hero-panel" style={{ aspectRatio: `${crop.panelWidth} / ${crop.panelHeight}`, width: crop.panelWidth === 750 ? "68.23%" : "100%", margin: "0 auto" }}>
+      <Image src={src} alt={`${name} — main view`} width={crop.width} height={crop.height}
+        style={{ width: `${crop.width / crop.panelWidth * 100}%`, maxWidth: "none", height: "auto" }}
+        sizes="(max-width:760px) 100vw, 50vw" />
+    </span>
+  );
   return (
     <Image
       src={product.image || `/tees/${product.id}.png`}
@@ -641,6 +655,7 @@ export default function Storefront({
                   name={currentProduct.name}
                 />
 
+                {currentProduct.image && /\/new-collection\/(slc-pants-|sunglasses-model-[23])/.test(currentProduct.image) && <Image src={currentProduct.image} alt={`${currentProduct.name} — additional angles and close-up details`} width={1145} height={1374} className="product-gallery-image" sizes="(max-width:760px) 100vw, 50vw" />}
                 {currentProduct.gallery?.map((src) => <Image key={src} src={src} alt={`${currentProduct.name} — additional views`} width={1122} height={1402} className="product-gallery-image" sizes="(max-width:760px) 100vw, 50vw" />)}
                 <p className="render-caption">
                   Design visualisation.
@@ -1011,7 +1026,6 @@ export default function Storefront({
           </>
         ))}
 
-      {!children && !currentProduct && !category && !wishlistPage && <section className="collection"><div className="section-heading"><h2>The SLC edit.</h2></div><div className="slc-lookbook"><Image src="/new-collection/slc-tops.png" alt="SLC tops styling board" width={1122} height={1402} sizes="(max-width:760px) 100vw, 33vw" /><Image src="/new-collection/slc-shirts.png" alt="SLC shirts styling board" width={1122} height={1402} sizes="(max-width:760px) 100vw, 33vw" /><Image src="/new-collection/slc-lookbook.png" alt="SLC collection styling board" width={1122} height={1402} sizes="(max-width:760px) 100vw, 33vw" /></div></section>}
       {!children && (
         <section className="community-banner">
           <p className="eyebrow">
