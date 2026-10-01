@@ -303,3 +303,8 @@ footer p { line-height:1.6; }
 .guide-content dt { font-weight:600; }
 .guide-content dd { margin:5px 0 0; line-height:1.6; }
 @media(max-width:760px) { .account-link { margin-left:auto; } }
+
+.product-gallery-image {display:block;width:100%;height:auto;margin-top:20px;}
+.slc-lookbook {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;}
+.slc-lookbook img {width:100%;height:auto;}
+@media(max-width:760px){.slc-lookbook{grid-template-columns:1fr;}}

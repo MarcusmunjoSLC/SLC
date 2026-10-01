@@ -146,6 +146,7 @@ export default function Storefront({
             colourName: row.colour_name || "",
             category: row.category || "t-shirts",
             image: row.image_url || undefined,
+            gallery: fallbackProducts.find(p => p.id === row.slug)?.gallery,
             concept: Boolean(row.concept),
             description: row.description || undefined,
 
@@ -640,6 +641,7 @@ export default function Storefront({
                   name={currentProduct.name}
                 />
 
+                {currentProduct.gallery?.map((src) => <Image key={src} src={src} alt={`${currentProduct.name} — additional views`} width={1122} height={1402} className="product-gallery-image" sizes="(max-width:760px) 100vw, 50vw" />)}
                 <p className="render-caption">
                   Design visualisation.
                   Final product details
@@ -882,7 +884,7 @@ export default function Storefront({
                           ? "piece"
                           : "pieces"
                       }`
-                    : "Five ways to wear SLC"}
+                    : `${categories.length} ways to wear SLC`}
                 </p>
               </div>
 
@@ -1009,6 +1011,7 @@ export default function Storefront({
           </>
         ))}
 
+      {!children && !currentProduct && !category && !wishlistPage && <section className="collection"><div className="section-heading"><h2>The SLC edit.</h2></div><div className="slc-lookbook"><Image src="/new-collection/slc-tops.png" alt="SLC tops styling board" width={1122} height={1402} sizes="(max-width:760px) 100vw, 33vw" /><Image src="/new-collection/slc-shirts.png" alt="SLC shirts styling board" width={1122} height={1402} sizes="(max-width:760px) 100vw, 33vw" /><Image src="/new-collection/slc-lookbook.png" alt="SLC collection styling board" width={1122} height={1402} sizes="(max-width:760px) 100vw, 33vw" /></div></section>}
       {!children && (
         <section className="community-banner">
           <p className="eyebrow">

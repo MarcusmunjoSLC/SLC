@@ -1,5 +1,8 @@
 import {categoryOf,type Product} from "./catalogue";
 const guides:Record<string,{intro:string;steps:[string,string][]}>={
+ hoodies:{intro:"Compare a hoodie you enjoy wearing, laid flat and zipped up.",steps:[["Chest","Measure across the chest just below the armholes."],["Length","Measure from the highest shoulder point to the hem."],["Sleeve","Measure from the shoulder seam to the cuff."]]},
+ tops:{intro:"Compare a similar top laid flat without stretching.",steps:[["Bust","Measure around the fullest part of your bust."],["Length","Measure the top from the highest strap point to the hem."]]},
+ trousers:{intro:"Compare trousers you like wearing without stretching the waistband.",steps:[["Waist","Measure around your natural waist."],["Hips","Measure around the fullest part of your hips."],["Inside leg","Measure from the crotch seam to the hem."]]},
  "t-shirts":{intro:"For an oversized tee, compare a T-shirt you already like wearing.",steps:[["Chest width","Lay the tee flat and measure straight across, just below the armholes."],["Body length","Measure from the highest shoulder point to the bottom hem."],["Sleeve length","Measure from the shoulder seam to the sleeve edge."]]},
  joggers:{intro:"Compare with a comfortable pair of joggers, laid flat without stretching.",steps:[["Waist","Measure around your natural waist with the tape comfortably level."],["Hips","Measure around the fullest part of your hips."],["Inside leg","Measure a well-fitting pair from the crotch seam to the hem."]]},
  "sports-bras":{intro:"Measure without padding and keep the tape level. Bra sizes vary between brands.",steps:[["Underbust","Measure around your ribcage directly beneath the bust."],["Bust","Measure around the fullest part of your bust without pulling the tape tight."]]},
@@ -12,6 +15,6 @@ export default function SizeGuide({product}:{product:Product}){
  <div className="guide-content"><h2>{eyewear?"Find your frame fit":"How to measure"}</h2><p>{guide.intro}</p>
  <dl>{guide.steps.map(([label,copy])=><div key={label}><dt>{label}</dt><dd>{copy}</dd></div>)}</dl>
  <h2>{eyewear?"Frame measurements":"Size chart"}</h2><p>Verified {eyewear?"frame dimensions":"measurements for each size"} haven’t been supplied yet. We’ll add them before this item is available to order.</p>
- <h2>Model reference</h2><p>This item is shown as a product render, not on a model. {eyewear?"On-face fit photos":"Model height, measurements and size worn"} will be added with the model photography.</p></div>
+ <h2>Model reference</h2><p>These are design reference images. Model measurements have not been supplied. {eyewear?"On-face fit photos":"Model height, measurements and size worn"} will be added with the model photography.</p></div>
  </details>;
 }

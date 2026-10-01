@@ -7,6 +7,7 @@ export type Product = {
   colourName: string;
   category?: string;
   image?: string;
+  gallery?: string[];
   concept?: boolean;
   description?: string;
   supporting?: [string, string];
@@ -14,7 +15,194 @@ export type Product = {
 
 export type BagItem = Product & { size: string };
 
+export const newCollection: Product[] = [
+  {
+    "id": "slc-hoodies-white",
+    "name": "SLC Zip Hoodie — White",
+    "lineOne": "COMFORT IS MY STANDARD.",
+    "colour": "#eee9de",
+    "colourName": "White",
+    "category": "hoodies",
+    "image": "/new-collection/slc-hoodie-white.png",
+    "concept": true,
+    "description": "A hooded zip-front layer with drawstrings, front pockets and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
+    "supporting": [
+      "For the woman who makes ease look effortless.",
+      "She keeps her comfort close and her standards high."
+    ]
+  },
+  {
+    "id": "slc-hoodies-black",
+    "name": "SLC Zip Hoodie — Black",
+    "lineOne": "COMFORT IS MY STANDARD.",
+    "colour": "#171614",
+    "colourName": "Black",
+    "category": "hoodies",
+    "image": "/new-collection/slc-hoodie-black.png",
+    "concept": true,
+    "description": "A hooded zip-front layer with drawstrings, front pockets and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
+    "supporting": [
+      "For the woman who makes ease look effortless.",
+      "She keeps her comfort close and her standards high."
+    ]
+  },
+  {
+    "id": "slc-hoodies-brown",
+    "name": "SLC Zip Hoodie — Brown",
+    "lineOne": "COMFORT IS MY STANDARD.",
+    "colour": "#4f3428",
+    "colourName": "Brown",
+    "category": "hoodies",
+    "image": "/new-collection/slc-hoodie-brown.png",
+    "concept": true,
+    "description": "A hooded zip-front layer with drawstrings, front pockets and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
+    "supporting": [
+      "For the woman who makes ease look effortless.",
+      "She keeps her comfort close and her standards high."
+    ]
+  },
+  {
+    "id": "slc-trousers-white",
+    "name": "SLC Wide-Leg Trousers — White",
+    "lineOne": "ROOM TO MOVE. SPACE TO BE.",
+    "colour": "#eee9de",
+    "colourName": "White",
+    "category": "trousers",
+    "image": "/new-collection/slc-pants-white.png",
+    "concept": true,
+    "description": "Wide-leg trousers with a drawstring waist and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
+    "supporting": [
+      "For the woman who moves through life on her own terms.",
+      "She takes up space without explaining herself."
+    ]
+  },
+  {
+    "id": "slc-trousers-black",
+    "name": "SLC Wide-Leg Trousers — Black",
+    "lineOne": "ROOM TO MOVE. SPACE TO BE.",
+    "colour": "#171614",
+    "colourName": "Black",
+    "category": "trousers",
+    "image": "/new-collection/slc-pants-black.png",
+    "concept": true,
+    "description": "Wide-leg trousers with a drawstring waist and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
+    "supporting": [
+      "For the woman who moves through life on her own terms.",
+      "She takes up space without explaining herself."
+    ]
+  },
+  {
+    "id": "slc-trousers-brown",
+    "name": "SLC Wide-Leg Trousers — Brown",
+    "lineOne": "ROOM TO MOVE. SPACE TO BE.",
+    "colour": "#4f3428",
+    "colourName": "Brown",
+    "category": "trousers",
+    "image": "/new-collection/slc-pants-brown.png",
+    "concept": true,
+    "description": "Wide-leg trousers with a drawstring waist and the SLC monogram. The styling quote describes the mood; the garment carries the logo shown.",
+    "supporting": [
+      "For the woman who moves through life on her own terms.",
+      "She takes up space without explaining herself."
+    ]
+  },
+  {
+    "id": "slc-tops-white",
+    "name": "SLC Signature Tank — White",
+    "lineOne": "LESS NOISE. MORE ME.",
+    "colour": "#eee9de",
+    "colourName": "White",
+    "category": "tops",
+    "image": "/new-collection/slc-top-white.png",
+    "concept": true,
+    "description": "A slim-strap, scoop-neck top with the SLC monogram at the chest. The styling quote describes the mood; the garment carries the logo shown.",
+    "supporting": [
+      "For the woman who finds confidence in simplicity.",
+      "Her presence says enough."
+    ]
+  },
+  {
+    "id": "slc-tops-black",
+    "name": "SLC Signature Tank — Black",
+    "lineOne": "LESS NOISE. MORE ME.",
+    "colour": "#171614",
+    "colourName": "Black",
+    "category": "tops",
+    "image": "/new-collection/slc-top-black.png",
+    "concept": true,
+    "description": "A slim-strap, scoop-neck top with the SLC monogram at the chest. The styling quote describes the mood; the garment carries the logo shown.",
+    "supporting": [
+      "For the woman who finds confidence in simplicity.",
+      "Her presence says enough."
+    ]
+  },
+  {
+    "id": "slc-tops-brown",
+    "name": "SLC Signature Tank — Brown",
+    "lineOne": "LESS NOISE. MORE ME.",
+    "colour": "#4f3428",
+    "colourName": "Brown",
+    "category": "tops",
+    "image": "/new-collection/slc-top-brown.png",
+    "concept": true,
+    "description": "A slim-strap, scoop-neck top with the SLC monogram at the chest. The styling quote describes the mood; the garment carries the logo shown.",
+    "supporting": [
+      "For the woman who finds confidence in simplicity.",
+      "Her presence says enough."
+    ]
+  },
+  {
+    "id": "slc-sunglasses-model-1",
+    "name": "SLC Rimless Sunglasses — Champagne",
+    "lineOne": "A SOFTER POINT OF VIEW.",
+    "colour": "#c5aa87",
+    "colourName": "Champagne",
+    "category": "sunglasses",
+    "image": "/new-collection/sunglasses-model-1.png",
+    "concept": true,
+    "description": "Rimless sunglasses with softly tinted lenses and decorative gold-tone arms. The styling quote is editorial, not lettering on the frames.",
+    "supporting": [
+      "For the woman who sees possibility everywhere.",
+      "She chooses her own perspective."
+    ],
+    "gallery": [
+      "/new-collection/sunglasses-model-1.1.png"
+    ]
+  },
+  {
+    "id": "slc-sunglasses-model-2",
+    "name": "SLC Wrap Sunglasses — Black",
+    "lineOne": "MY PEACE IS PRIVATE.",
+    "colour": "#161616",
+    "colourName": "Black",
+    "category": "sunglasses",
+    "image": "/new-collection/sunglasses-model-2.png",
+    "concept": true,
+    "description": "Black wrap-style sunglasses with dark lenses and the SLC monogram at the temples. The styling quote is editorial, not lettering on the frames.",
+    "supporting": [
+      "For the woman who decides what gets her attention.",
+      "Her boundaries look good on her."
+    ]
+  },
+  {
+    "id": "slc-sunglasses-model-3",
+    "name": "SLC Wrap Sunglasses — Brown",
+    "lineOne": "UNBOTHERED. ALWAYS.",
+    "colour": "#643524",
+    "colourName": "Brown",
+    "category": "sunglasses",
+    "image": "/new-collection/sunglasses-model-3.png",
+    "concept": true,
+    "description": "Brown wrap-style sunglasses with tinted lenses and the SLC monogram at the temples. The styling quote is editorial, not lettering on the frames.",
+    "supporting": [
+      "For the woman whose confidence needs no audience.",
+      "She keeps her outlook warm and her standards clear."
+    ]
+  }
+];
+
 export const products: Product[] = [
+  ...newCollection,
   { id: "off-duty-joggers", name: "Off Duty Joggers", lineOne: "OFF DUTY. STILL THAT GIRL.", colour: "#eeeae0", colourName: "Cream", category: "joggers", image: "/joggers.png", concept: true, description: "A cream jogger concept with a drawstring waist, cuffed ankles and a small SLC monogram above the slogan.", supporting: ["For the woman who clocks out without shrinking.", "Her confidence doesn’t take a day off."] },
   { id: "strong-core-sports-bra", name: "Strong Core Sports Bra", lineOne: "SOFT LIFE. STRONG CORE.", colour: "#72513e", colourName: "Mocha", category: "sports-bras", image: "/sports-bra.png", concept: true, description: "A mocha scoop-neck sports-bra concept with cream lettering and the SLC monogram on the lower band.", supporting: ["For the woman building strength on her own terms.", "She makes room for softness, too."] },
   { id: "out-of-office-sunglasses", name: "Out of Office Sunglasses", lineOne: "LESS ACCESS. BETTER VIEWS.", colour: "#151515", colourName: "Black", category: "sunglasses", image: "/sunglasses.png", concept: true, description: "A black rectangular sunglasses concept with a gold-tone SLC monogram at the temple. The quote is the piece’s mood; the frames carry the logo only.", supporting: ["For the woman who chooses what gets her attention.", "Her outlook is clear. Her availability is limited."] },
@@ -33,6 +221,9 @@ export const products: Product[] = [
 export const sizes = ["S", "M", "L", "XL"];
 
 export const categories = [
+  {id:"hoodies",name:"Hoodies",description:"Easy layers. The SLC signature.",cover:"slc-hoodies-white"},
+  {id:"tops",name:"Tops",description:"Everyday essentials. Quiet confidence.",cover:"slc-tops-black"},
+  {id:"trousers",name:"Trousers",description:"A little more room to move.",cover:"slc-trousers-brown"},
   { id: "t-shirts", name: "T-shirts", description: "Oversized fits. Statements that speak for you.", cover: "peace-over-everything" },
   { id: "joggers", name: "Joggers", description: "Off-duty ease with a little attitude.", cover: "off-duty-joggers" },
   { id: "sports-bras", name: "Sports bras", description: "Soft life. Strong energy.", cover: "strong-core-sports-bra" },
