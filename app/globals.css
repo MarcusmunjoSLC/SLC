@@ -312,3 +312,7 @@ footer p { line-height:1.6; }
 /* Blend studio product backgrounds into the store's cream canvas. */
 .product-photo, .detail-photo { background:var(--paper); }
 .concept-photo, .product-hero-panel, .product-gallery-image { mix-blend-mode:multiply; }
+
+.product-gallery-main { margin-top:0; }
+.detail-photo { max-width:none; }
+@media (max-width:760px) { .detail-photo { max-width:600px; width:100%; margin-inline:auto; } }

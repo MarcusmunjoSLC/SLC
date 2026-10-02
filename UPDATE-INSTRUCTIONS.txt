@@ -1,5 +1,5 @@
-SLC image background update
+SLC product photo layout update
 
-Unzip this download. Upload the app, components and public folders plus next.config.ts to MarcusmunjoSLC/SLC on GitHub using Add file > Upload files. Commit changes. Vercel will deploy automatically.
+Unzip and upload app, components, public and next.config.ts to your GitHub repository. Commit changes to trigger Vercel deployment. No SQL needed.
 
-Product images now blend into the cream page background. Includes the earlier category and main-photo changes. No SQL required.
+Product pages show the supplied main and detail views once, blended into cream. Listings keep a single main view. Items with only one supplied photo continue to show that photo until additional views are available.

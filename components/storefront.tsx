@@ -650,13 +650,14 @@ export default function Storefront({
 
             <div className="product-detail-grid">
               <div className="detail-photo">
-                <ShirtPhoto
-                  product={currentProduct}
-                  name={currentProduct.name}
-                />
-
-                {currentProduct.image && /\/new-collection\/(slc-pants-|sunglasses-model-[23])/.test(currentProduct.image) && <Image src={currentProduct.image} alt={`${currentProduct.name} — additional angles and close-up details`} width={1145} height={1374} className="product-gallery-image" sizes="(max-width:760px) 100vw, 50vw" />}
-                {currentProduct.gallery?.map((src) => <Image key={src} src={src} alt={`${currentProduct.name} — additional views`} width={1122} height={1402} className="product-gallery-image" sizes="(max-width:760px) 100vw, 50vw" />)}
+                {currentProduct.image && /\/new-collection\/(slc-pants-|sunglasses-model-[23])/.test(currentProduct.image) ? (
+                  <Image src={currentProduct.image} alt={`${currentProduct.name} — main view, additional angles and close-up details`} width={1145} height={1374} className="product-gallery-image product-gallery-main" sizes="(max-width:760px) 100vw, 50vw" />
+                ) : (
+                  <ShirtPhoto product={currentProduct} name={currentProduct.name} />
+                )}
+                {Array.from(new Set(currentProduct.gallery || [])).filter(src => src !== currentProduct.image).map(src => (
+                  <Image key={src} src={src} alt={`${currentProduct.name} — additional views`} width={1122} height={1402} className="product-gallery-image" sizes="(max-width:760px) 100vw, 50vw" />
+                ))}
                 <p className="render-caption">
                   Design visualisation.
                   Final product details
