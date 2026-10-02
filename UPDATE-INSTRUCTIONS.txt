@@ -1,5 +1,5 @@
-SLC product photo layout update
+SLC product gallery update
 
-Unzip and upload app, components, public and next.config.ts to your GitHub repository. Commit changes to trigger Vercel deployment. No SQL needed.
+Unzip this download. Upload app, components and public folders and next.config.ts to MarcusmunjoSLC/SLC on GitHub, then Commit changes. Vercel deploys automatically. No SQL needed.
 
-Product pages show the supplied main and detail views once, blended into cream. Listings keep a single main view. Items with only one supplied photo continue to show that photo until additional views are available.
+Includes 18 new AI-generated supplementary gallery boards, with angled views and close-up details. The original category images remain the main photos. Existing multi-view products retain their galleries. These are design visualisations, not photographs of manufactured stock.

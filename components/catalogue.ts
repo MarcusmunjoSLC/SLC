@@ -217,6 +217,12 @@ export const products: Product[] = [
   { id: "hard-boundaries", name: "Hard Boundaries Tee", lineOne: "SOFT LIFE.", lineTwo: "HARD BOUNDARIES.", colour: "#d8cdbd", colourName: "Sand" },
 ];
 
+// AI-generated supplementary design views, shown only on product pages.
+const detailViewIds = new Set(["slc-hoodies-white", "slc-tops-white", "slc-hoodies-black", "slc-tops-black", "slc-hoodies-brown", "slc-tops-brown", "strong-core-sports-bra", "out-of-office-sunglasses", "own-pace-tracksuit", "rich-in-peace", "bare-minimum", "protect-your-peace", "dont-chase", "fully-booked", "hard-boundaries", "peace-over-everything", "pay-me-yet", "moisturized"]);
+for (const product of products) {
+  if (detailViewIds.has(product.id)) product.gallery = [...(product.gallery || []), `/product-details/${product.id}.png`];
+}
+
 export const sizes = ["S", "M", "L", "XL"];
 
 export const categories = [
