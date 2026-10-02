@@ -308,3 +308,7 @@ footer p { line-height:1.6; }
 
 .product-hero-panel { display:block; position:relative; overflow:hidden; width:100%; flex-shrink:0; }
 .product-hero-panel img { display:block; }
+
+/* Blend studio product backgrounds into the store's cream canvas. */
+.product-photo, .detail-photo { background:var(--paper); }
+.concept-photo, .product-hero-panel, .product-gallery-image { mix-blend-mode:multiply; }

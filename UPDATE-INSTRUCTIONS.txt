@@ -1,10 +1,5 @@
-SLC category and product-photo update
+SLC image background update
 
-1. Unzip this download.
-2. Open MarcusmunjoSLC/SLC on GitHub. Choose Add file > Upload files.
-3. Drag the app, components and public folders plus next.config.ts into the upload area.
-4. Commit changes. Vercel will deploy the update automatically.
+Unzip this download. Upload the app, components and public folders plus next.config.ts to MarcusmunjoSLC/SLC on GitHub using Add file > Upload files. Commit changes. Vercel will deploy automatically.
 
-The database category changes have already been applied. You do not need to run SQL again.
-The old Joggers item is hidden. The former Trousers collection is now Joggers.
-Listings show one main view; additional views appear only on product pages.
+Product images now blend into the cream page background. Includes the earlier category and main-photo changes. No SQL required.
